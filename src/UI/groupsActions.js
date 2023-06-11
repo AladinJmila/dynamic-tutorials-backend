@@ -18,7 +18,6 @@ export default function groupsActions(state) {
     });
   }
   renderDropdown();
-  handleStoredState();
 
   dropdownBtns.forEach(btn => {
     btn.addEventListener('click', function () {
@@ -81,31 +80,11 @@ export default function groupsActions(state) {
           data = JSON.parse(data);
           console.log(data);
           console.log(data._id);
-          storedState.lastAddedGroup = data._id;
+          storedState.selectThisGroup = data._id;
           localStorage.setItem('storedState', JSON.stringify(storedState));
           location.reload();
         }
       }
     });
   });
-
-  function handleStoredState() {
-    let storedState = JSON.parse(localStorage.getItem('storedState'));
-    if (!storedState) {
-      localStorage.setItem('storedState', '{}');
-      storedState = JSON.parse(localStorage.getItem('storedState'));
-    } else {
-      const lastAddedGroupBtn = document.getElementById(
-        storedState.lastAddedGroup
-      );
-      if (lastAddedGroupBtn) {
-        setTimeout(() => {
-          lastAddedGroupBtn.click();
-          storedState.lastAddedGroup = '';
-          localStorage.setItem('storedState', JSON.stringify(storedState));
-        }, 300);
-      }
-    }
-    return storedState;
-  }
 }

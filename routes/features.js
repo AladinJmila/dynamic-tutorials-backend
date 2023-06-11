@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
     await group.save();
   });
 
-  res.send('Success');
+  res.send(feature);
 });
 
 router.get('/:id', async (req, res) => {
