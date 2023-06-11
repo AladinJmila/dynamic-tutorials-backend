@@ -18,6 +18,7 @@ export default function groupsActions(state) {
     });
   }
   renderDropdown();
+  handleStoredState();
 
   dropdownBtns.forEach(btn => {
     btn.addEventListener('click', function () {
@@ -58,7 +59,7 @@ export default function groupsActions(state) {
   });
 
   addGroupBtns.forEach((btn, i) => {
-    btn.addEventListener('click', async () => {
+    btn.addEventListener('click', async function () {
       const name = groupsNames[i].value;
       const appId = groupsNames[i].dataset.appId;
       const parentGroupId = groupsNames[i].dataset.groupId;
@@ -73,8 +74,38 @@ export default function groupsActions(state) {
           }),
         });
 
-        if (res) location.reload();
+        const storedState = JSON.parse(localStorage.getItem('storedState'));
+
+        if (res) {
+          let data = await res.text();
+          data = JSON.parse(data);
+          console.log(data);
+          console.log(data._id);
+          storedState.lastAddedGroup = data._id;
+          localStorage.setItem('storedState', JSON.stringify(storedState));
+          location.reload();
+        }
       }
     });
   });
+
+  function handleStoredState() {
+    let storedState = JSON.parse(localStorage.getItem('storedState'));
+    if (!storedState) {
+      localStorage.setItem('storedState', '{}');
+      storedState = JSON.parse(localStorage.getItem('storedState'));
+    } else {
+      const lastAddedGroupBtn = document.getElementById(
+        storedState.lastAddedGroup
+      );
+      if (lastAddedGroupBtn) {
+        setTimeout(() => {
+          lastAddedGroupBtn.click();
+          storedState.lastAddedGroup = '';
+          localStorage.setItem('storedState', JSON.stringify(storedState));
+        }, 300);
+      }
+    }
+    return storedState;
+  }
 }
