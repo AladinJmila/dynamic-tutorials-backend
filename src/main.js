@@ -69,22 +69,38 @@ function handleStoredState() {
     localStorage.setItem('storedState', '{}');
     storedState = JSON.parse(localStorage.getItem('storedState'));
   } else {
-    const groupBtn = document.getElementById(storedState.selectThisGroup);
-    if (groupBtn) {
-      setTimeout(() => {
-        groupBtn.click();
-        storedState.selectThisGroup = '';
-        localStorage.setItem('storedState', JSON.stringify(storedState));
-      }, 300);
-    }
+    if (state.mode === 'editor') {
+      if (storedState.selectThisGroup) {
+        const groupBtn = document.getElementById(storedState.selectThisGroup);
 
-    const featureBtn = document.getElementById(storedState.selectThisFeature);
-    if (featureBtn) {
-      setTimeout(() => {
-        featureBtn.click();
-        storedState.selectThisFeature = '';
-        localStorage.setItem('storedState', JSON.stringify(storedState));
-      }, 300);
+        setTimeout(() => {
+          groupBtn.click();
+          // storedState.selectThisGroup = '';
+          // localStorage.setItem('storedState', JSON.stringify(storedState));
+        }, 300);
+      }
+
+      if (storedState.selectThisFeature) {
+        const featureBtn = document.getElementById(
+          storedState.selectThisFeature
+        );
+
+        setTimeout(() => {
+          featureBtn.click();
+          // storedState.selectThisFeature = '';
+          // localStorage.setItem('storedState', JSON.stringify(storedState));
+        }, 300);
+      }
+
+      if (storedState.selectThisSlide) {
+        const slideBtn = document.getElementById(storedState.selectThisSlide);
+
+        setTimeout(() => {
+          slideBtn && slideBtn.click();
+          // storedState.selectThisSlide = '';
+          // localStorage.setItem('storedState', JSON.stringify(storedState));
+        }, 300);
+      }
     }
   }
 }

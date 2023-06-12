@@ -64,7 +64,20 @@ export function sendSlide(state) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ featureId }),
       });
-      if (res) location.reload();
+
+      const storedState = JSON.parse(localStorage.getItem('storedState'));
+
+      if (res) {
+        let data = await res.text();
+        data = JSON.parse(data);
+        console.log(data);
+        console.log(data._id);
+        storedState.selectThisGroup = data.groups[data.groups.length - 1];
+        storedState.selectThisFeature = data._id;
+        storedState.selectThisSlide = data.slides[data.slides.length - 1];
+        localStorage.setItem('storedState', JSON.stringify(storedState));
+        location.reload();
+      }
     }
   });
 }

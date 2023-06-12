@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
   feature.slides.push(slide._id);
   await feature.save();
 
-  res.send('Success');
+  res.send(feature);
 });
 
 router.put('/:id', async (req, res) => {
