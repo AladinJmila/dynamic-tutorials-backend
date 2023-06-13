@@ -7,9 +7,6 @@
     "start": "node index.js",
     "build": "webpack --config webpack.config.js --watch --mode=production"
   },
-  "engines": {
-    "node": "16.14.0"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
