@@ -8,7 +8,9 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 const passport = require('passport');
 require('./config/passport')(passport);
-const dbURI = require('./config/db');
+// const dbURI = require('./config/db');
+const config = require('config');
+const dbURI = config.get('db');
 const app = express();
 const Feature = require('./models/feature');
 
