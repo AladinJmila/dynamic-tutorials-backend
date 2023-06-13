@@ -61,7 +61,7 @@ if (/tutorials\/show$/.test(location.href)) {
   homeActions();
 }
 
-window.addEventListener('load', handleStoredState);
+window.addEventListener('DOMContentLoaded', handleStoredState);
 
 function handleStoredState() {
   let storedState = JSON.parse(localStorage.getItem('storedState'));
@@ -93,12 +93,10 @@ function handleStoredState() {
       }
 
       if (storedState.selectThisSlide) {
-        const slideBtn = document.getElementById(storedState.selectThisSlide);
-
         setTimeout(() => {
+          const slideBtn = document.getElementById(storedState.selectThisSlide);
+
           slideBtn && slideBtn.click();
-          // storedState.selectThisSlide = '';
-          // localStorage.setItem('storedState', JSON.stringify(storedState));
         }, 300);
       }
     }

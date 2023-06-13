@@ -162,9 +162,16 @@ export function renderSlide(state) {
       });
     });
     if (state.selectedSlide) {
-      document.getElementById(state.selectedSlide).click();
+      const slideBtn = document.getElementById(state.selectedSlide);
+      if (slideBtn) slideBtn.click();
     } else {
-      slidesBtns[0].click();
+      const storedState = JSON.parse(localStorage.getItem('storedState'));
+      if (state.mode === 'editor' && storedState.selectThisSlide) {
+        const slideBtn = document.getElementById(storedState.selectThisSlide);
+        slideBtn.click();
+      } else {
+        slidesBtns[0].click();
+      }
     }
 
     let i = 0;

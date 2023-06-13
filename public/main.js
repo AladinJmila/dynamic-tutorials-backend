@@ -2260,7 +2260,7 @@ function groupsActions(state) {
   });
   addGroupBtns.forEach(function (btn, i) {
     btn.addEventListener('click', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regenerator_default().mark(function _callee() {
-      var name, appId, parentGroupId, res;
+      var name, appId, parentGroupId, res, storedState, data;
       return regenerator_default().wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -2270,7 +2270,7 @@ function groupsActions(state) {
               parentGroupId = groupsNames[i].dataset.groupId;
 
               if (!name) {
-                _context.next = 8;
+                _context.next = 18;
                 break;
               }
 
@@ -2289,9 +2289,26 @@ function groupsActions(state) {
 
             case 6:
               res = _context.sent;
-              if (res) location.reload();
+              storedState = JSON.parse(localStorage.getItem('storedState'));
 
-            case 8:
+              if (!res) {
+                _context.next = 18;
+                break;
+              }
+
+              _context.next = 11;
+              return res.text();
+
+            case 11:
+              data = _context.sent;
+              data = JSON.parse(data);
+              console.log(data);
+              console.log(data._id);
+              storedState.selectThisGroup = data._id;
+              localStorage.setItem('storedState', JSON.stringify(storedState));
+              location.reload();
+
+            case 18:
             case "end":
               return _context.stop();
           }
@@ -2532,7 +2549,7 @@ function slidesEditor(state) {
 function sendSlide(state) {
   var addSlide = document.getElementById('add-slide-btn');
   addSlide.addEventListener('click', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regenerator_default().mark(function _callee() {
-    var featureId, res;
+    var featureId, res, storedState, data;
     return regenerator_default().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -2541,7 +2558,7 @@ function sendSlide(state) {
             state.selectedFeature = featureId;
 
             if (!featureId) {
-              _context.next = 8;
+              _context.next = 20;
               break;
             }
 
@@ -2559,9 +2576,28 @@ function sendSlide(state) {
 
           case 6:
             res = _context.sent;
-            if (res) location.reload();
+            storedState = JSON.parse(localStorage.getItem('storedState'));
 
-          case 8:
+            if (!res) {
+              _context.next = 20;
+              break;
+            }
+
+            _context.next = 11;
+            return res.text();
+
+          case 11:
+            data = _context.sent;
+            data = JSON.parse(data);
+            console.log(data);
+            console.log(data._id);
+            storedState.selectThisGroup = data.groups[data.groups.length - 1];
+            storedState.selectThisFeature = data._id;
+            storedState.selectThisSlide = data.slides[data.slides.length - 1];
+            localStorage.setItem('storedState', JSON.stringify(storedState));
+            location.reload();
+
+          case 20:
           case "end":
             return _context.stop();
         }
@@ -2631,9 +2667,18 @@ function renderSlide(state) {
     });
 
     if (state.selectedSlide) {
-      document.getElementById(state.selectedSlide).click();
+      var slideBtn = document.getElementById(state.selectedSlide);
+      if (slideBtn) slideBtn.click();
     } else {
-      slidesBtns[0].click();
+      var storedState = JSON.parse(localStorage.getItem('storedState'));
+
+      if (state.mode === 'editor' && storedState.selectThisSlide) {
+        var _slideBtn = document.getElementById(storedState.selectThisSlide);
+
+        _slideBtn.click();
+      } else {
+        slidesBtns[0].click();
+      }
     }
 
     var i = 0;
@@ -2993,7 +3038,7 @@ function featuresActions(state) {
   var featureName = document.getElementById('feature-name');
   var note = document.getElementById('add-feature-note');
   addFeatureBtn.addEventListener('click', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regenerator_default().mark(function _callee() {
-    var selectedGroupId, res;
+    var selectedGroupId, res, storedState, data;
     return regenerator_default().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -3004,7 +3049,7 @@ function featuresActions(state) {
             if (!selectedGroupId) note.classList.add('show');
 
             if (!selectedGroupId) {
-              _context.next = 7;
+              _context.next = 18;
               break;
             }
 
@@ -3022,9 +3067,27 @@ function featuresActions(state) {
 
           case 5:
             res = _context.sent;
-            if (res) location.reload();
+            storedState = JSON.parse(localStorage.getItem('storedState'));
 
-          case 7:
+            if (!res) {
+              _context.next = 18;
+              break;
+            }
+
+            _context.next = 10;
+            return res.text();
+
+          case 10:
+            data = _context.sent;
+            data = JSON.parse(data);
+            console.log(data);
+            console.log(data._id);
+            storedState.selectThisGroup = data.groups[data.groups.length - 1];
+            storedState.selectThisFeature = data._id;
+            localStorage.setItem('storedState', JSON.stringify(storedState));
+            location.reload();
+
+          case 18:
           case "end":
             return _context.stop();
         }
@@ -3252,6 +3315,42 @@ if (!/tutorials\/show$/.test(location.href)) {
 
 if (/tutorials\/show$/.test(location.href)) {
   homeDashboard();
+}
+
+window.addEventListener('DOMContentLoaded', handleStoredState);
+
+function handleStoredState() {
+  var storedState = JSON.parse(localStorage.getItem('storedState'));
+
+  if (!storedState) {
+    localStorage.setItem('storedState', '{}');
+    storedState = JSON.parse(localStorage.getItem('storedState'));
+  } else {
+    if (state.mode === 'editor') {
+      if (storedState.selectThisGroup) {
+        var groupBtn = document.getElementById(storedState.selectThisGroup);
+        setTimeout(function () {
+          groupBtn.click(); // storedState.selectThisGroup = '';
+          // localStorage.setItem('storedState', JSON.stringify(storedState));
+        }, 300);
+      }
+
+      if (storedState.selectThisFeature) {
+        var featureBtn = document.getElementById(storedState.selectThisFeature);
+        setTimeout(function () {
+          featureBtn.click(); // storedState.selectThisFeature = '';
+          // localStorage.setItem('storedState', JSON.stringify(storedState));
+        }, 300);
+      }
+
+      if (storedState.selectThisSlide) {
+        setTimeout(function () {
+          var slideBtn = document.getElementById(storedState.selectThisSlide);
+          slideBtn && slideBtn.click();
+        }, 300);
+      }
+    }
+  }
 } // setTimeout(() => {
 //   const target = document.querySelector('.core-search__content');
 //   console.log(target.getBoundingClientRect());
