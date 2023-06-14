@@ -8,8 +8,7 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 const passport = require('passport');
 require('./config/passport')(passport);
-const config = require('config');
-const dbURI = config.get('db');
+const dbURI = require('./config/db');
 const app = express();
 const Feature = require('./models/feature');
 
@@ -22,8 +21,11 @@ const features = require('./routes/features');
 const slides = require('./routes/slides');
 
 // Launch server
+
 const port = process.env.PORT || 4500;
 app.listen(port, () => {
+  console.log('NODE_ENV:', process.env.NODE_ENV);
+  console.log('NODE_ENV:', process.env.dt_db);
   console.log(`Server running on port ${port}...`);
 });
 
