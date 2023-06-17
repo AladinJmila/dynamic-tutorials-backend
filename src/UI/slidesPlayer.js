@@ -1,7 +1,6 @@
 export default function slidesPlayer(state) {
   const playBtn = document.getElementById('play-btn');
   const audio = document.querySelector('audio');
-  const slideImg = document.getElementById('slide-img');
   const playIcon = `<i id='play-btn' class='fa fa-play'></i>`;
   const pauseIcon = `<i id='play-btn' class='fa fa-pause'></i>`;
   let playTime;

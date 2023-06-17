@@ -2451,6 +2451,7 @@ function canvasDraw(state, canvas, ctx, scaleToFit, imageObj) {
 function imageUpload(state, canvas, scaleToFit) {
   var dropArea = document.getElementById('slides-body');
   var fileInput = document.getElementById('file-input');
+  var slideImg = document.getElementById('slide-img');
   var imageObj = new Image();
 
   if (state.mode === 'editor') {
@@ -2483,6 +2484,8 @@ function imageUpload(state, canvas, scaleToFit) {
   function imageToCanvas(img) {
     if (/image*/.test(img.type)) {
       state.imageFile = img;
+      slideImg.setAttribute('style', "background: url(\"".concat(window.URL.createObjectURL(img), "\");"));
+      console.log(slideImg);
       imageObj.src = window.URL.createObjectURL(img);
 
       imageObj.onload = function () {
@@ -2702,7 +2705,6 @@ function renderSlide(state) {
 function slidesPlayer(state) {
   var playBtn = document.getElementById('play-btn');
   var audio = document.querySelector('audio');
-  var slideImg = document.getElementById('slide-img');
   var playIcon = "<i id='play-btn' class='fa fa-play'></i>";
   var pauseIcon = "<i id='play-btn' class='fa fa-pause'></i>";
   var playTime;

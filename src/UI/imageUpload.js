@@ -1,6 +1,7 @@
 export default function imageUpload(state, canvas, scaleToFit) {
   const dropArea = document.getElementById('slides-body');
   const fileInput = document.getElementById('file-input');
+  const slideImg = document.getElementById('slide-img');
   const imageObj = new Image();
 
   if (state.mode === 'editor') {
@@ -38,6 +39,11 @@ export default function imageUpload(state, canvas, scaleToFit) {
     if (/image*/.test(img.type)) {
       state.imageFile = img;
 
+      slideImg.setAttribute(
+        'style',
+        `background: url("${window.URL.createObjectURL(img)}");`
+      );
+      console.log(slideImg);
       imageObj.src = window.URL.createObjectURL(img);
       imageObj.onload = function () {
         canvas.width = canvas.width;
