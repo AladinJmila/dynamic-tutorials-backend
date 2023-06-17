@@ -38,7 +38,7 @@ export default function slidesEditor(state) {
   canvasDraw(state, canvas, ctx, scaleToFit, imageObj);
   resizeCanvas();
 
-  imageObj.src = '/images/sakura.jpg';
+  imageObj.src = '';
   imageObj.onload = function () {
     scaleToFit(this);
   };

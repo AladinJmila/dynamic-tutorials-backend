@@ -2533,7 +2533,7 @@ function slidesEditor(state) {
   imageUpload(state, canvas, scaleToFit);
   canvasDraw(state, canvas, ctx, scaleToFit, imageObj);
   resizeCanvas();
-  imageObj.src = '/images/sakura.jpg';
+  imageObj.src = '';
 
   imageObj.onload = function () {
     scaleToFit(this);
@@ -3141,7 +3141,7 @@ function slideToDb(state) {
   var submit = document.getElementById('slide-submit-btn');
   submit.addEventListener('click', /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regenerator_default().mark(function _callee(e) {
-      var audio, slideName, slideId, notes, formData, audioDuration, res;
+      var audio, slideName, slideId, notes, formData, audioDuration, res, storedState, data;
       return regenerator_default().wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -3154,7 +3154,7 @@ function slideToDb(state) {
               formData = new FormData();
 
               if (!slideId) {
-                _context.next = 32;
+                _context.next = 44;
                 break;
               }
 
@@ -3227,18 +3227,28 @@ function slideToDb(state) {
 
             case 30:
               res = _context.sent;
+              storedState = JSON.parse(localStorage.getItem('storedState'));
 
-              // console.log({
-              //   slideName,
-              //   notes,
-              //   duration: audioDuration ? audioDuration : 0,
-              // });
-              if (res) {
-                document.getElementById(state.selectedFeature).click();
-              } // if (res) location.reload();
+              if (!res) {
+                _context.next = 44;
+                break;
+              }
 
+              _context.next = 35;
+              return res.text();
 
-            case 32:
+            case 35:
+              data = _context.sent;
+              data = JSON.parse(data);
+              console.log(data);
+              console.log(data._id);
+              storedState.selectThisGroup = data.groups[data.groups.length - 1];
+              storedState.selectThisFeature = data._id;
+              storedState.selectThisSlide = data.slides[data.slides.length - 1];
+              localStorage.setItem('storedState', JSON.stringify(storedState));
+              location.reload();
+
+            case 44:
             case "end":
               return _context.stop();
           }

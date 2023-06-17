@@ -42,14 +42,19 @@ router.put('/:id', async (req, res) => {
     })
   );
 
-  features.forEach(async feature => {
-    if (feature.slides.includes(slide._id)) {
-      feature.duration += parseInt(req.body.duration);
-      await feature.save();
-    }
-  });
+  let savedFeature;
 
-  res.send('Success');
+  await Promise.all(
+    features.map(async feature => {
+      if (feature.slides.includes(slide._id)) {
+        feature.duration += parseInt(req.body.duration);
+        await feature.save();
+        savedFeature = feature;
+      }
+    })
+  );
+  console.log(savedFeature);
+  res.send(savedFeature);
 });
 
 router.put('/viewed/:id', async (req, res) => {

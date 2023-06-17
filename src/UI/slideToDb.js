@@ -53,16 +53,19 @@ export default function slideToDb(state) {
         }),
       });
 
-      // console.log({
-      //   slideName,
-      //   notes,
-      //   duration: audioDuration ? audioDuration : 0,
-      // });
+      const storedState = JSON.parse(localStorage.getItem('storedState'));
 
       if (res) {
-        document.getElementById(state.selectedFeature).click();
+        let data = await res.text();
+        data = JSON.parse(data);
+        console.log(data);
+        console.log(data._id);
+        storedState.selectThisGroup = data.groups[data.groups.length - 1];
+        storedState.selectThisFeature = data._id;
+        storedState.selectThisSlide = data.slides[data.slides.length - 1];
+        localStorage.setItem('storedState', JSON.stringify(storedState));
+        location.reload();
       }
-      // if (res) location.reload();
     }
   });
 }
