@@ -36,16 +36,23 @@ function setViewerMode() {
   slidesActions(state);
   resetNavBtnsStyle();
   viewerBtn.classList.add('active');
+
+  editorBtn.style.display = 'none';
 }
 
 editorBtn.addEventListener('click', setEditorMode);
 
 function setEditorMode() {
-  state.mode = 'editor';
-  state.loaded = true;
-  slidesActions(state);
-  resetNavBtnsStyle();
-  editorBtn.classList.add('active');
+  if (location.href.includes('show-ze-editor')) {
+    editorBtn.style.display = 'block';
+    state.mode = 'editor';
+    state.loaded = true;
+    slidesActions(state);
+    resetNavBtnsStyle();
+    editorBtn.classList.add('active');
+  } else {
+    setViewerMode();
+  }
 }
 
 if (!/tutorials\/show$/.test(location.href)) {
