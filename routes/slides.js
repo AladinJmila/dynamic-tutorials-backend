@@ -53,7 +53,7 @@ router.put('/:id', async (req, res) => {
       }
     })
   );
-  console.log(savedFeature);
+  // console.log(savedFeature);
   res.send(savedFeature);
 });
 
