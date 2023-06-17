@@ -4,6 +4,7 @@ export default function groupsActions(state) {
   const groupsNames = Array.from(document.querySelectorAll('.group-name'));
   const addGroupBtns = Array.from(document.querySelectorAll('.add-group-btn'));
   const selectedGroupNameEl = document.getElementById('selected-group-name');
+  const slideImage = document.getElementById('slide-img');
   const featuresColletctions = document.querySelectorAll(
     '.features-collection'
   );
@@ -36,8 +37,17 @@ export default function groupsActions(state) {
         state.selectedGroup = null;
         selectedGroupNameEl.innerText = 'select a group';
       } else {
+        const activeFeature = document.querySelector('.feature-btn.active');
+        activeFeature && activeFeature.classList.remove('active');
+        const slideImage = document.getElementById('slide-img');
+        slideImage.setAttribute('style', 'background: url("")');
         state.selectedGroup = this.dataset.groupId;
         selectedGroupNameEl.innerText = this.dataset.groupName;
+        console.log('clicked');
+        localStorage.setItem(
+          'storedState',
+          JSON.stringify({ selectThisGroup: this.dataset.groupId })
+        );
       }
 
       featuresColletctions.forEach(fc => {

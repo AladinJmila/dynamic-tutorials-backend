@@ -2215,6 +2215,7 @@ function groupsActions(state) {
   var groupsNames = Array.from(document.querySelectorAll('.group-name'));
   var addGroupBtns = Array.from(document.querySelectorAll('.add-group-btn'));
   var selectedGroupNameEl = document.getElementById('selected-group-name');
+  var slideImage = document.getElementById('slide-img');
   var featuresColletctions = document.querySelectorAll('.features-collection');
 
   function renderDropdown() {
@@ -2242,8 +2243,19 @@ function groupsActions(state) {
         state.selectedGroup = null;
         selectedGroupNameEl.innerText = 'select a group';
       } else {
+        var activeFeature = document.querySelector('.feature-btn.active');
+        activeFeature && activeFeature.classList.remove('active');
+
+        var _slideImage = document.getElementById('slide-img');
+
+        _slideImage.setAttribute('style', 'background: url("")');
+
         state.selectedGroup = this.dataset.groupId;
         selectedGroupNameEl.innerText = this.dataset.groupName;
+        console.log('clicked');
+        localStorage.setItem('storedState', JSON.stringify({
+          selectThisGroup: this.dataset.groupId
+        }));
       }
 
       featuresColletctions.forEach(function (fc) {
