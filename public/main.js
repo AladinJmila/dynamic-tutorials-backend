@@ -2623,7 +2623,7 @@ function sendSlide(state) {
 function renderProgressFrags(slides) {
   var slidesProgress = document.querySelector('.slides-progress');
   var slidesHtml = slides.map(function (slide) {
-    return "\n    <div class='progress-frag' id='".concat(slide._id, "'>\n      <div class='progress-bar'></div>\n      <div class='progress-disc'></div>\n    </div>\n  ");
+    return slide && slide._id ? "<div class='progress-frag' id=\"".concat(slide._id, "\">\n        <div class='progress-bar'></div>\n        <div class='progress-disc'></div>\n      </div>") : '';
   }).join('');
   slidesProgress.innerHTML = slidesHtml;
 }

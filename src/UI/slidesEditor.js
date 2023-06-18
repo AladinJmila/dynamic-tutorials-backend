@@ -86,12 +86,12 @@ export function renderProgressFrags(slides) {
   const slidesProgress = document.querySelector('.slides-progress');
   const slidesHtml = slides
     .map(slide => {
-      return `
-    <div class='progress-frag' id='${slide._id}'>
-      <div class='progress-bar'></div>
-      <div class='progress-disc'></div>
-    </div>
-  `;
+      return slide && slide._id
+        ? `<div class='progress-frag' id="${slide._id}">
+        <div class='progress-bar'></div>
+        <div class='progress-disc'></div>
+      </div>`
+        : '';
     })
     .join('');
 
